@@ -1,0 +1,20 @@
+    Brokerage API Client:
+        initialize_api_client(api_key, secret_key): Initialize connection to brokerage data API with authentication.
+        handle_rate_limits(request_limit): Handle rate limits to ensure compliance with API usage policies.
+        input_parameters(instrument, start_date, end_date): Function to input instrument, start date, and end date parameters.
+
+    Download OHLCV Bars:
+        submit_api_request(instrument, start_date, end_date): Submit API requests per instrument and download data.
+        parse_raw_pricing_data(raw_data): Parse raw pricing data obtained from the API.
+
+    Data Validation:
+        check_corrupt_data(pricing_data): Check for corrupt or missing data in the pricing data.
+        identify_invalid_values(pricing_data): Identify invalid values (e.g., 0 volumes) in the pricing data.
+        log_warnings_errors(warnings, errors): Log warnings and errors during validation.
+
+    Data Storage:
+        serialize_to_cloud_storage(pricing_data, date, instrument): Serialize pricing data to cloud storage, partitioned by date and instrument.
+        support_incremental_updates(existing_data, new_data): Support incremental updates to the stored data.
+
+    Main Workflow:
+        main(instruments, start_date, end_date): Main function to orchestrate the workflow, calling the above functions.
