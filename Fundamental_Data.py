@@ -136,3 +136,42 @@ class FundamentalDataStorageManager(DataStorageManager):
         updated_data = list(existing_data_dict.values())
         
         return updated_data
+    
+'''# Set up your list of instruments and fundamental fields
+fundamental_instruments = ['AAPL', 'GOOGL', 'MSFT']
+fundamental_fields = ['financials', 'earnings', 'macro_indicators']
+
+# Initialize the API client for Fundamental Data
+fundamental_api_client = FundamentalDataAPIClient(vendor='Tiingo')
+fundamental_api_client.initialize_api_client()
+fundamental_api_client.input_parameters(fundamental_instruments, fundamental_fields)
+
+# Ingest Fundamental Data
+fundamental_ingester = FundamentalDataIngester(fundamental_api_client)
+fundamental_raw_data = fundamental_ingester.submit_api_request()
+fundamental_structured_data = fundamental_ingester.structure_data(fundamental_raw_data)
+
+# Perform data validation for Fundamental Data
+fundamental_validator = FundamentalDataValidator(fundamental_structured_data)
+fundamental_validator.validate_data_contents()
+
+# Initialize DataStorageManager for Fundamental Data
+fundamental_connection_string = 'your_azure_storage_connection_string'
+fundamental_container_name = 'your_fundamental_container_name'
+fundamental_partition_key = 'instrument_and_attribute'
+fundamental_storage_manager = FundamentalDataStorageManager(
+    fundamental_connection_string, fundamental_container_name, fundamental_partition_key
+)
+
+# Serialize data to cloud storage for Fundamental Data
+for attribute, data in fundamental_structured_data.items():
+    for instrument, attribute_data in data.items():
+        fundamental_storage_manager.serialize_structured_data(attribute_data, instrument, attribute)
+
+# Support incremental appends for Fundamental Data (assuming you have existing data)
+fundamental_existing_data = {}  # Replace with your existing data
+for attribute, data in fundamental_structured_data.items():
+    for instrument, attribute_data in data.items():
+        fundamental_existing_data[instrument] = fundamental_storage_manager.support_incremental_appends(
+            fundamental_existing_data.get(instrument, []), attribute_data
+        )'''
