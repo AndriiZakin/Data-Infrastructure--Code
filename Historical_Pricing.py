@@ -143,6 +143,25 @@ class DataStorageManager:
 
     #The DataStorageManager class does not explicitly handle data versioning. If you need to store different versions of the data, you can modify the class to include a version number in the filename or as a metadata property.
 
+'''We want coverage of the major assets traders are interested in.
+
+To support this, the main enhancement needed in the code would be taking a list/universe of cryptocurrency tickers as input rather than a single hard-coded string instrument.
+
+So for example instead of:
+
+Copy code
+def input_parameters(self, instrument, start_date, end_date):
+   self.instrument = instrument
+
+We would have:
+
+Copy code
+def input_parameters(self, instruments_list, start_date, end_date):
+   self.instruments = instruments_list
+
+And then loop over fetching data for each instrument in list, storing the bars segmented by ticker in the storage layer.
+
+No other major structural changes needed - just adapting to handle a universe of assets instead of one.'''
 
 #How to call this function:
 '''from datetime import datetime, timedelta
