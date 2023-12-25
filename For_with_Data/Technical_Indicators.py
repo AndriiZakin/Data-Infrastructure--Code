@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from Historical_Pricing import DataStorageManager  
+from Data_gathering.Historical_Pricing import DataStorageManager  
 
 class MovingAverages:
     def __init__(self, pricing_data):
@@ -9,11 +9,19 @@ class MovingAverages:
         self.ma_data = None
 
     def compute_simple_moving_average(self, window_length):
+        # Validate window_length
+        if window_length <= 0:
+            raise ValueError("Window length must be greater than 0.")
+        
         # Implementation details for computing simple moving average
         self.ma_data = self.pricing_data.groupby('instrument')['close'].rolling(window=window_length).mean().reset_index()
         self.ma_data = self.ma_data.rename(columns={'close': 'simple_moving_average'})
 
     def compute_exponential_moving_average(self, span):
+        # Validate span
+        if span <= 0:
+            raise ValueError("Span must be greater than 0.")
+        
         # Implementation details for computing exponential moving average
         self.ma_data = self.pricing_data.groupby('instrument')['close'].ewm(span=span, adjust=False).mean().reset_index()
         self.ma_data = self.ma_data.rename(columns={'close': 'exponential_moving_average'})
@@ -22,13 +30,16 @@ class MovingAverages:
         # Implementation details for serializing MA time series
         DataStorageManager.serialize_to_cloud_storage(self.ma_data, 'ma_time_series.json')
 
-
 class BollingerBands:
     def __init__(self, pricing_data):
         self.pricing_data = pricing_data
         self.bb_data = None
 
     def compute_bollinger_bands(self, lookback_period, deviation):
+        # Validate lookback_period and deviation
+        if lookback_period <= 0 or deviation <= 0:
+            raise ValueError("Lookback period and deviation must be greater than 0.")
+        
         # Implementation details for computing Bollinger Bands
         ma = self.pricing_data.groupby('instrument')['close'].rolling(window=lookback_period).mean().reset_index()
         std = self.pricing_data.groupby('instrument')['close'].rolling(window=lookback_period).std().reset_index()
@@ -47,13 +58,16 @@ class BollingerBands:
         # Implementation details for serializing Bollinger Bands time series
         DataStorageManager.serialize_to_cloud_storage(self.bb_data, 'bb_time_series.json')
 
-
 class RelativeStrengthIndex:
     def __init__(self, pricing_data):
         self.pricing_data = pricing_data
         self.rsi_data = None
 
     def calculate_rsi(self, window, overbought_threshold, oversold_threshold):
+        # Validate window
+        if window <= 0:
+            raise ValueError("Window must be greater than 0.")
+
         # Implementation details for calculating Relative Strength Index
         delta = self.pricing_data.groupby('instrument')['close'].diff()
         gain = delta.where(delta > 0, 0)
